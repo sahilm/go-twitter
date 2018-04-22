@@ -6,7 +6,7 @@ import (
 	_ "github.com/lib/pq"
 	"net/http"
 	"time"
-	log "github.com/sirupsen/logrus"
+	"github.com/sirupsen/logrus"
 	"github.com/pkg/errors"
 	"os"
 	"os/signal"
@@ -42,20 +42,20 @@ func (app App) Run(port string) {
 
 	go func() {
 		if err := srv.ListenAndServe(); err != nil {
-			log.Fatal(errors.Wrap(err, "failed to start server"))
+			logrus.Fatal(errors.Wrap(err, "failed to start server"))
 		}
 	}()
 
-	log.Info("server running on " + addr)
+	logrus.Info("server running on " + addr)
 
 	stop := make(chan os.Signal, 1)
 	signal.Notify(stop, os.Interrupt, syscall.SIGTERM)
 	<-stop
 
 	wait := time.Second * 15
-	log.Info("received shutdown signal. Draining connections for a maximum of " + wait.String())
+	logrus.Info("received shutdown signal. Draining connections for a maximum of " + wait.String())
 	ctx, cancel := context.WithTimeout(context.Background(), wait)
 	defer cancel()
 	srv.Shutdown(ctx)
-	log.Info("server going down")
+	logrus.Info("server going down")
 }
