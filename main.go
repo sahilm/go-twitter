@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/sahilm/go-twitter/app"
 	"github.com/pkg/errors"
+	"github.com/sahilm/go-twitter/app"
 	"github.com/sirupsen/logrus"
 )
 

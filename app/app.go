@@ -1,17 +1,18 @@
 package app
 
 import (
-	"github.com/gorilla/mux"
-	"github.com/jmoiron/sqlx"
-	_ "github.com/lib/pq"
+	"context"
 	"net/http"
-	"time"
-	"github.com/sirupsen/logrus"
-	"github.com/pkg/errors"
 	"os"
 	"os/signal"
 	"syscall"
-	"context"
+	"time"
+
+	"github.com/gorilla/mux"
+	"github.com/jmoiron/sqlx"
+	_ "github.com/lib/pq"
+	"github.com/pkg/errors"
+	"github.com/sirupsen/logrus"
 )
 
 type App struct {
@@ -56,6 +57,9 @@ func (app App) Run(port string) {
 	logrus.Info("received shutdown signal. Draining connections for a maximum of " + wait.String())
 	ctx, cancel := context.WithTimeout(context.Background(), wait)
 	defer cancel()
-	srv.Shutdown(ctx)
+	err := srv.Shutdown(ctx)
+	if err != nil {
+		logrus.Fatal(errors.Wrap(err, "failed to shutdown server"))
+	}
 	logrus.Info("server going down")
 }

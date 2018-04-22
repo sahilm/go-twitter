@@ -1,11 +1,12 @@
 package app
 
 import (
-	"net/http"
-	"net"
 	"bufio"
 	"fmt"
+	"net"
+	"net/http"
 	"time"
+
 	"github.com/sirupsen/logrus"
 )
 
