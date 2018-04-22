@@ -26,9 +26,17 @@ install: setup
 BIN_DIR := $(GOPATH)/bin
 GOIMPORTS := $(BIN_DIR)/goimports
 GOMETALINTER := $(BIN_DIR)/gometalinter
+SQL_MIGRATE := $(BIN_DIR)/sql-migrate
+PACKR := $(BIN_DIR)/packr
 DEP := $(BIN_DIR)/dep
 GOCOV := $(BIN_DIR)/gocov
 GOCOV_HTML := $(BIN_DIR)/gocov-html
+
+$(SQL_MIGRATE):
+	go get -v github.com/rubenv/sql-migrate/...
+
+$(PACR):
+	go get -u github.com/gobuffalo/packr/...
 
 $(GOIMPORTS):
 	go get -u golang.org/x/tools/cmd/goimports
@@ -55,3 +63,6 @@ setup: tools vendor
 
 updatedeps:
 	dep ensure -update
+
+createdb:
+	createdb -E UTF-8 -T template0 --locale=en_US.UTF-8 twitter

@@ -1,0 +1,5 @@
+development:
+    dialect: postgres
+    datasource: dbname=twitter sslmode=disable
+    dir: db_migrations
+    table: migrations
