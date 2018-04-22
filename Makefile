@@ -21,7 +21,9 @@ lint: setup
 
 .PHONY: install
 install: setup
+	packr
 	go install
+	packr clean
 
 BIN_DIR := $(GOPATH)/bin
 GOIMPORTS := $(BIN_DIR)/goimports
@@ -33,9 +35,9 @@ GOCOV := $(BIN_DIR)/gocov
 GOCOV_HTML := $(BIN_DIR)/gocov-html
 
 $(SQL_MIGRATE):
-	go get -v github.com/rubenv/sql-migrate/...
+	go get -u github.com/rubenv/sql-migrate/...
 
-$(PACR):
+$(PACKR):
 	go get -u github.com/gobuffalo/packr/...
 
 $(GOIMPORTS):
@@ -54,7 +56,7 @@ $(GOCOV_HTML):
 $(DEP):
 	go get -u github.com/golang/dep/cmd/dep
 
-tools: $(GOIMPORTS) $(GOMETALINTER) $(GOCOV) $(GOCOV_HTML) $(DEP)
+tools: $(GOIMPORTS) $(GOMETALINTER) $(GOCOV) $(GOCOV_HTML) $(PACKR) $(SQL_MIGRATE) $(DEP)
 
 vendor: $(DEP)
 	dep ensure
